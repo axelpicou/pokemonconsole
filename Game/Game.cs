@@ -15,6 +15,7 @@ class Game
 
         // Coordonnées initiales du joueur
         Position playerPosition;
+        InventoryManager.AddPkmInv();
 
         // Lire les lignes du fichier pour obtenir la carte initiale
         string[] initialLines = File.ReadAllLines(filePath);
@@ -73,7 +74,7 @@ class Game
                 if (InvOpen == 0)
                 {
                     // Afficher la carte mise à jour
-                    Console.WriteLine($"Le joueur est en X:{playerPosition.X} Y:{playerPosition.Y}");
+                    Console.WriteLine($"\nLe joueur est en X:{playerPosition.X} Y:{playerPosition.Y}");
                     Console.WriteLine("Carte mise à jour :");
                     foreach (string line in initialLines)
                     {

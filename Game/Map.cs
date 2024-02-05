@@ -23,7 +23,7 @@ class Map
             if (lines[newY][newX] == '/')
             {
                 // Si la case contient '/'
-                Console.WriteLine("Caca");
+                Console.WriteLine("Tu touche de l'Herbe omg");
             }
 
             // Mettre à jour la carte à la nouvelle position

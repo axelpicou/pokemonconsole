@@ -1,24 +1,41 @@
-test
+Test1
+250
+#1
+0
+1
+Emotional Damage
+500
+1
+No U
 100
-atk1
-150
-5
-atk2
-50
-20
-test2
-100
-atk1
-60
 15
 
-
-
-test3
-200
-atk1
-5
-500
-atk2
+Villager
 50
-3
+#2
+0
+1
+Scam
+150
+5
+Stare
+50
+15
+
+Sardoche
+50
+#3
+0
+1
+Mais c'etait sur enfaite
+50
+30
+
+ClapTrap
+100
+#4
+0
+1
+Des Escaliers
+500
+2
