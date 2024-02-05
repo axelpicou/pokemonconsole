@@ -18,11 +18,18 @@ class Map
         // Coordonnées initiales du joueur
         Position playerPosition;
 
+            // Lire les lignes du fichier pour obtenir la carte initiale
+            string[] initialLines = File.ReadAllLines(filePath);
+
+            // Sauvegarder la carte initiale pour pouvoir réinitialiser les cellules
+            string[] initialMap = new string[initialLines.Length];
+            Array.Copy(initialLines, initialMap, initialLines.Length);
+
         try
         {         
             
-            // Lire les lignes du fichier pour obtenir la carte initiale
-            string[] initialLines = File.ReadAllLines(filePath);
+            // Charger les coordonnées du joueur à partir du fichier
+            playerPosition = LoadPlayerPosition(playersavefile);
 
             // Afficher la carte initiale
             Console.WriteLine("Carte initiale :");
@@ -31,8 +38,7 @@ class Map
                 Console.WriteLine(line);
             }
 
-            // Charger les coordonnées du joueur à partir du fichier
-            playerPosition = LoadPlayerPosition(playersavefile);
+
 
             ConsoleKeyInfo key;
             do
@@ -49,16 +55,16 @@ class Map
                 switch (key.Key)
                 {
                     case ConsoleKey.Z:
-                        MovePlayer(initialLines, ref playerPosition, 0, -1);
+                        MovePlayer(initialLines, ref playerPosition, 0, -1, initialMap);
                         break;
                     case ConsoleKey.Q:
-                        MovePlayer(initialLines, ref playerPosition, -1, 0);
+                        MovePlayer(initialLines, ref playerPosition, -1, 0, initialMap);
                         break;
                     case ConsoleKey.S:
-                        MovePlayer(initialLines, ref playerPosition, 0, 1);
+                        MovePlayer(initialLines, ref playerPosition, 0, 1, initialMap);
                         break;
                     case ConsoleKey.D:
-                        MovePlayer(initialLines, ref playerPosition, 1, 0);
+                        MovePlayer(initialLines, ref playerPosition, 1, 0, initialMap);
                         break;
                 }
 
@@ -81,7 +87,7 @@ class Map
     }
 
     // Fonction pour déplacer le joueur et vérifier les limites
-    static void MovePlayer(string[] lines, ref Position position, int offsetX, int offsetY)
+    static void MovePlayer(string[] lines, ref Position position, int offsetX, int offsetY, string[] initialMap)
     {
         // Calculer la nouvelle position
         int newX = position.X + offsetX;
@@ -90,8 +96,8 @@ class Map
         // Vérifier les limites
         if (newY >= 0 && newY < lines.Length && newX >= 0 && newX < lines[newY].Length && (lines[newY][newX] == '.' || lines[newY][newX] == '/'))
         {
-            // Mettre à jour la carte à l'ancienne position
-            lines[position.Y] = lines[position.Y].Remove(position.X, 1).Insert(position.X, ".");
+            // Réinitialiser la cellule à l'ancienne position
+            ResetCell(lines, position, initialMap);
 
             // Déplacer le joueur
             position.X = newX;
@@ -109,6 +115,13 @@ class Map
             lines[newY] = new string(lineChars);
         }
     }
+
+    static void ResetCell(string[] lines, Position position, string[] initialMap)
+    {
+        char initialCell = initialMap[position.Y][position.X];
+        lines[position.Y] = lines[position.Y].Remove(position.X, 1).Insert(position.X, initialCell.ToString());
+    }
+
     static void SavePlayerPosition(string filePath, Position position)
     {
         try
