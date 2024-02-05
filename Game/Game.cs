@@ -36,6 +36,7 @@ class Game
             do
             {
                 key = Console.ReadKey(true); // Attendre l'entrée de l'utilisateur
+                int InvOpen = 0;
 
                 // Effacer la console à chaque déplacement
                 Console.Clear();
@@ -58,16 +59,23 @@ class Game
                     case ConsoleKey.D:
                         Map.MovePlayer(initialLines, ref playerPosition, 1, 0, initialMap);
                         break;
+                    case ConsoleKey.I:
+                        InventoryManager.DisplayInventory(InvActuel);
+                        InvOpen = 1;
+                        break;
                 }
 
                 Player.SavePosition(playersavefile, playerPosition);
 
-                // Afficher la carte mise à jour
-                Console.WriteLine($"Le joueur est en X:{playerPosition.X} Y:{playerPosition.Y}");
-                Console.WriteLine("Carte mise à jour :");
-                foreach (string line in initialLines)
+                if (InvOpen == 0)
                 {
-                    Console.WriteLine(line);
+                    // Afficher la carte mise à jour
+                    Console.WriteLine($"Le joueur est en X:{playerPosition.X} Y:{playerPosition.Y}");
+                    Console.WriteLine("Carte mise à jour :");
+                    foreach (string line in initialLines)
+                    {
+                        Console.WriteLine(line);
+                    }
                 }
             } while (key.Key != ConsoleKey.Escape); // Sortir de la boucle si la touche Escape est appuyée
         }
