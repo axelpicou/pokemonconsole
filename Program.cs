@@ -13,12 +13,14 @@ class Map
     {
         // Chemin du fichier
         string filePath = "../../../asset/MAP1.txt";
+        string playersavefile = "../../../save/playerPOS.txt";
 
         // Coordonnées initiales du joueur
-        Position playerPosition = new Position { X = 15, Y = 12 };
+        Position playerPosition;
 
         try
-        {
+        {         
+            
             // Lire les lignes du fichier pour obtenir la carte initiale
             string[] initialLines = File.ReadAllLines(filePath);
 
@@ -28,6 +30,9 @@ class Map
             {
                 Console.WriteLine(line);
             }
+
+            // Charger les coordonnées du joueur à partir du fichier
+            playerPosition = LoadPlayerPosition(playersavefile);
 
             ConsoleKeyInfo key;
             do
@@ -56,6 +61,9 @@ class Map
                         MovePlayer(initialLines, ref playerPosition, 1, 0);
                         break;
                 }
+
+                SavePlayerPosition(playersavefile, playerPosition);
+
 
                 // Afficher la carte mise à jour
                 Console.WriteLine($"Le joueur est en X:{playerPosition.X} Y:{playerPosition.Y}");
@@ -101,9 +109,54 @@ class Map
             lines[newY] = new string(lineChars);
         }
     }
+    static void SavePlayerPosition(string filePath, Position position)
+    {
+        try
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine($"{position.X},{position.Y}");
+            }
+        }
+        catch (IOException e)
+        {
+            Console.WriteLine("Erreur à l'écriture du fichier de sauvegarde : " + e.Message);
+        }
+    }
+    // Fonction pour charger la position du joueur depuis un fichier
+    static Position LoadPlayerPosition(string filePath)
+    {
+        Position position = new Position();
 
-        // Fonction pour effacer l'affichage du joueur à l'ancienne position
-        static void ClearPlayer(string[] lines, Position position)
+        try
+        {
+            if (File.Exists(filePath))
+            {
+                string[] coordinates = File.ReadAllText(filePath).Split(',');
+                if (coordinates.Length == 2 && int.TryParse(coordinates[0], out position.X) && int.TryParse(coordinates[1], out position.Y))
+                {
+                    Console.WriteLine("Position du joueur chargée depuis le fichier.");
+                }
+                else
+                {
+                    Console.WriteLine("Le fichier de position du joueur est mal formaté. Utilisation des coordonnées par défaut.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Le fichier de position du joueur n'existe pas. Utilisation des coordonnées par défaut.");
+            }
+        }
+        catch (IOException e)
+        {
+            Console.WriteLine("Erreur lors de la lecture du fichier de position du joueur : " + e.Message);
+        }
+
+        return position;
+    }
+
+    // Fonction pour effacer l'affichage du joueur à l'ancienne position
+    static void ClearPlayer(string[] lines, Position position)
     {
         char currentCell = lines[position.Y][position.X];
 
