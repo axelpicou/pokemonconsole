@@ -9,6 +9,9 @@ class Game
         // Chemin du fichier
         string filePath = "../../../asset/MAP1.txt";
         string playersavefile = "../../../save/playerPOS.txt";
+        string[] InvActuel = File.ReadAllLines("../../../asset/InvModif.txt");
+        string[] InvInitial = File.ReadAllLines("../../../asset/InvInitial.txt");
+        InvActuel = InvInitial;
 
         // Coordonnées initiales du joueur
         Position playerPosition;

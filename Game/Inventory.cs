@@ -38,10 +38,10 @@ class InventoryManager
             // Update the cursor position based on user input
             switch (key.Key)
             {
-                case ConsoleKey.UpArrow:
+                case ConsoleKey.Z:
                     pointerPos = Math.Max(1, pointerPos - 4); // Move the cursor up
                     break;
-                case ConsoleKey.DownArrow:
+                case ConsoleKey.S:
                     pointerPos = Math.Min(inventory.Length - 5, pointerPos + 4); // Move the cursor down
                     break;
             }
