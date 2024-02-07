@@ -1,57 +1,61 @@
 ﻿// Map.cs
 using System;
-using System.IO;
 
-class Map
+namespace pokemonconsole.Game
 {
-    public static void MovePlayer(string[] lines, ref Position position, int offsetX, int offsetY, string[] initialMap)
+    class Map
     {
-        // Calculer la nouvelle position
-        int newX = position.X + offsetX;
-        int newY = position.Y + offsetY;
+        private static Random random = new Random();
+        private static BattleManager battleManager = new BattleManager();
 
-        // Vérifier les limites
-        if (newY >= 0 && newY < lines.Length && newX >= 0 && newX < lines[newY].Length && (lines[newY][newX] == '.' || lines[newY][newX] == '/'))
+        public static void InitializeBattleManager(BattleManager manager)
         {
-            // Réinitialiser la cellule à l'ancienne position
-            ResetCell(lines, position, initialMap);
+            battleManager = manager;
+        }
 
-            // Déplacer le joueur
-            position.X = newX;
-            position.Y = newY;
+        public static void MovePlayer(string[] lines, ref Position position, int offsetX, int offsetY, string[] initialMap, string[] initialLines)
+        {
+            // Calculer la nouvelle position
+            int newX = position.X + offsetX;
+            int newY = position.Y + offsetY;
 
-            if (lines[newY][newX] == '/')
+            // Vérifier les limites
+            if (newY >= 0 && newY < lines.Length && newX >= 0 && newX < lines[newY].Length && (lines[newY][newX] == '.' || lines[newY][newX] == '/'))
             {
-                // Si la case contient '/'
-                Console.WriteLine("Caca");
+                // Réinitialiser la cellule à l'ancienne position
+                ResetCell(lines, position, initialMap);
+
+                // Déplacer le joueur
+                position.X = newX;
+                position.Y = newY;
+
+                // Générer un nombre aléatoire entre 1 et 100
+                int randomNumber = random.Next(1, 101);
+
+                // Vérifier si le nombre aléatoire est inférieur ou égal à 20 (20 % de chance)
+                if (randomNumber <= 20 && lines[newY][newX] == '/')
+                {
+                    // Commencer une bataille
+                    battleManager.StartBattle(initialLines, position);
+                }
+
+                // Mettre à jour la carte à la nouvelle position
+                char[] lineChars = lines[newY].ToCharArray();
+                lineChars[newX] = '@';
+                lines[newY] = new string(lineChars);
             }
-
-            // Mettre à jour la carte à la nouvelle position
-            char[] lineChars = lines[newY].ToCharArray();
-            lineChars[newX] = '@';
-            lines[newY] = new string(lineChars);
         }
-    }
 
-    public static void ResetCell(string[] lines, Position position, string[] initialMap)
-    {
-        char initialCell = initialMap[position.Y][position.X];
-        lines[position.Y] = lines[position.Y].Remove(position.X, 1).Insert(position.X, initialCell.ToString());
-    }
-
-    // Fonction pour effacer l'affichage du joueur à l'ancienne position
-    public static void ClearPlayer(string[] lines, Position position)
-    {
-        char currentCell = lines[position.Y][position.X];
-
-        // Si la cellule d'origine était '/', la rétablir en tant que '/'
-        if (currentCell == '@' && lines[position.Y][position.X] == '.')
+        private static void ResetCell(string[] lines, Position position, string[] initialMap)
         {
-            lines[position.Y] = lines[position.Y].Remove(position.X, 1).Insert(position.X, "/");
+            char initialCell = initialMap[position.Y][position.X];
+            lines[position.Y] = lines[position.Y].Remove(position.X, 1).Insert(position.X, initialCell.ToString());
         }
-        else
+
+        public static void ClearPlayer(string[] lines, Position position)
         {
-            // Sinon, rétablir la cellule d'origine (qui était probablement '.')
+            // Réinitialiser la cellule à l'emplacement du joueur
+            char currentCell = lines[position.Y][position.X];
             lines[position.Y] = lines[position.Y].Remove(position.X, 1).Insert(position.X, currentCell.ToString());
         }
     }

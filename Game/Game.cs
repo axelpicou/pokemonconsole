@@ -1,6 +1,7 @@
-﻿// Program.cs
+﻿// Game.cs
 using System;
 using System.IO;
+using pokemonconsole.Game;
 
 class Game
 {
@@ -12,6 +13,9 @@ class Game
         string[] InvActuel = File.ReadAllLines("../../../asset/InvModif.txt");
         string[] InvInitial = File.ReadAllLines("../../../asset/InvInitial.txt");
         InvActuel = InvInitial;
+
+        BattleManager battleManager = new BattleManager();
+        Map.InitializeBattleManager(battleManager);
 
         // Coordonnées initiales du joueur
         Position playerPosition;
@@ -51,16 +55,16 @@ class Game
                 switch (key.Key)
                 {
                     case ConsoleKey.Z:
-                        Map.MovePlayer(initialLines, ref playerPosition, 0, -1, initialMap);
+                        Map.MovePlayer(initialLines, ref playerPosition, 0, -1, initialMap, initialLines);
                         break;
                     case ConsoleKey.Q:
-                        Map.MovePlayer(initialLines, ref playerPosition, -1, 0, initialMap);
+                        Map.MovePlayer(initialLines, ref playerPosition, -1, 0, initialMap, initialLines);
                         break;
                     case ConsoleKey.S:
-                        Map.MovePlayer(initialLines, ref playerPosition, 0, 1, initialMap);
+                        Map.MovePlayer(initialLines, ref playerPosition, 0, 1, initialMap, initialLines);
                         break;
                     case ConsoleKey.D:
-                        Map.MovePlayer(initialLines, ref playerPosition, 1, 0, initialMap);
+                        Map.MovePlayer(initialLines, ref playerPosition, 1, 0, initialMap, initialLines);
                         break;
                     case ConsoleKey.I:
                         InventoryManager.DisplayInventory(InvActuel);
