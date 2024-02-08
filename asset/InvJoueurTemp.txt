@@ -1,1 +1,0 @@
-{"NomPkm":"Reverse Card","VieMax":500,"VieActuelle":500,"ID":"#0","XP":0,"Niveau":1,"Atk1":"Emotional Damage","ForceAtk1":350,"UsesLeftAtk1":2,"Atk2":"No U","ForceAtk2":50,"UsesLeftAtk2":15}

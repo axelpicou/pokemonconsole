@@ -12,7 +12,7 @@ class BattleManager
         Pokemon playerPokemon = LoadPlayerPokemon();
 
         //Advresaire aléatoire depuis ListePkm.txt
-        Pokemon opponentPokemon = SelectRandomOpponent();
+        Pokemon opponentPokemon = SelectRandomOpponent(playerPokemon);
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine($"\nPokémon du joueur:\n{playerPokemon.NomPkm}");
         Console.ResetColor();
@@ -34,6 +34,7 @@ class BattleManager
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\n\n\nBravo!\nVous avez battu {opponentPokemon.NomPkm}!");
+                EndBattle(playerPokemon);
                 Console.ResetColor();
                 break;
             }
@@ -65,10 +66,13 @@ class BattleManager
         string jsonContent = File.ReadAllText(invJoueurTempPath);
         Pokemon playerPokemon = JsonSerializer.Deserialize<Pokemon>(jsonContent);
 
+        // Adjust opponent Pokémon stats based on level
+        AdjustPokemonStatsByLevel(playerPokemon);
+
         return playerPokemon;
     }
 
-    private static Pokemon SelectRandomOpponent()
+    private static Pokemon SelectRandomOpponent(Pokemon playerPokemon)
     {
         // Advresaire aléatoire depuis ListePkm.txt
         string listePkmPath = "../../../asset/ListePkm.txt";
@@ -90,6 +94,9 @@ class BattleManager
 
         try
         {
+            // Calculer le niveau de l'opposant en utilisant la nouvelle méthode
+            int opponentLevel = CalculateOpponentLevel(playerPokemon.Niveau);
+
             // Création d'une instance
             Pokemon opponentPokemon = new Pokemon
             {
@@ -98,7 +105,7 @@ class BattleManager
                 VieActuelle = int.Parse(lines.ElementAtOrDefault(indexOfPokemon - 1) ?? "0"),
                 ID = lines.ElementAtOrDefault(indexOfPokemon),
                 XP = int.Parse(lines.ElementAtOrDefault(indexOfPokemon + 1) ?? "0"),
-                Niveau = int.Parse(lines.ElementAtOrDefault(indexOfPokemon + 2) ?? "0"),
+                Niveau = opponentLevel,
                 Atk1 = lines.ElementAtOrDefault(indexOfPokemon + 3),
                 ForceAtk1 = int.Parse(lines.ElementAtOrDefault(indexOfPokemon + 4) ?? "0"),
                 UsesLeftAtk1 = int.Parse(lines.ElementAtOrDefault(indexOfPokemon + 5) ?? "0"),
@@ -106,7 +113,8 @@ class BattleManager
                 ForceAtk2 = int.Parse(lines.ElementAtOrDefault(indexOfPokemon + 7) ?? "0"),
                 UsesLeftAtk2 = int.Parse(lines.ElementAtOrDefault(indexOfPokemon + 8) ?? "0"),
             };
-
+            // Adjust opponent Pokémon stats based on level
+            AdjustPokemonStatsByLevel(opponentPokemon);
             return opponentPokemon;
         }
         catch (FormatException e)
@@ -217,9 +225,79 @@ class BattleManager
     private static void DisplayPokemonInfo(Pokemon pokemon)
     {
         // Info des Pokémons
-        Console.WriteLine($"{pokemon.NomPkm}");
+        Console.WriteLine($"{pokemon.NomPkm}, Niveau {pokemon.Niveau}");
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"\nPV: {pokemon.VieActuelle}/{pokemon.VieMax}\n");
         Console.ResetColor();
     }
+
+    private static void EndBattle(Pokemon playerPokemon)
+    {
+        // ... (other logic)
+
+        // Award a random amount of XP after the battle
+        Random random = new Random();
+        int xpEarned = random.Next(50, 100); // Adjust the range based on your game's balancing
+        // Add the earned XP to the player's Pokémon
+        playerPokemon.XP += xpEarned;
+
+        Console.WriteLine($"\n\nVotre {playerPokemon.NomPkm} a gagné {xpEarned} d'XP!\n{playerPokemon.XP}/100\n\n");
+
+
+        // Reset current health to max health
+        playerPokemon.VieActuelle = playerPokemon.VieMax;
+
+        // Reset the number of uses for both abilities to their defaults
+        ResetAbilitiesUses(playerPokemon);
+
+        // Check if the player's Pokémon leveled up
+        InventoryManager.LevelUp(playerPokemon);
+
+        // Save the updated level and XP to InvJoueurTemp.txt
+        InventoryManager.SaveLevelAndXP(playerPokemon);
+    }
+
+    private static void ResetAbilitiesUses(Pokemon pokemon)
+    {
+        // Retrieve default values from ListePkm.txt based on the Pokémon's ID
+        string listePkmPath = "../../../asset/ListePkm.txt";
+        string[] lines = File.ReadAllLines(listePkmPath);
+
+        // Find the index of the selected Pokemon ID
+        int indexOfPokemon = Array.IndexOf(lines, pokemon.ID);
+
+        if (indexOfPokemon != -1)
+        {
+            // Reset the number of uses for both abilities to their defaults
+            pokemon.UsesLeftAtk1 = int.TryParse(lines[indexOfPokemon + 5], out int usesAtk1) ? usesAtk1 : 0;
+            pokemon.UsesLeftAtk2 = int.TryParse(lines[indexOfPokemon + 8], out int usesAtk2) ? usesAtk2 : 0;
+        }
+        else
+        {
+            Console.WriteLine($"Error: Pokémon with ID {pokemon.ID} not found in ListePkm.txt");
+        }
+    }
+
+    private static void AdjustPokemonStatsByLevel(Pokemon pokemon)
+    {
+        Random random = new Random();
+        // Adjust Pokémon stats based on their level
+        // You can define your own formula for adjusting the stats here
+        pokemon.VieMax += 10 * pokemon.Niveau; // Adjust max health
+        pokemon.VieActuelle = pokemon.VieMax;   // Reset current health to max health
+        pokemon.ForceAtk1 += 5 * pokemon.Niveau; // Adjust attack strength for Atk1
+        pokemon.ForceAtk2 += 3 * pokemon.Niveau; // Adjust attack strength for Atk2
+
+    }
+    private static int CalculateOpponentLevel(int playerPokemonLevel)
+{
+    // Calculate opponent level based on player's level with a slight random offset
+    Random random = new Random();
+    int levelOffset = random.Next(-2, 3); // Adjust the offset range based on your game's balancing
+    int calculatedLevel = playerPokemonLevel + levelOffset;
+
+    // Ensure the opponent's level is within a specific range and enforce a minimum level of 1
+    return Math.Max(1, Math.Min(calculatedLevel, playerPokemonLevel + 2));
+}
+
 }

@@ -8,10 +8,10 @@ Emotional Damage
 2
 No U
 50
-15
+30
 
 Villager
-1500
+1000
 #1
 0
 1
