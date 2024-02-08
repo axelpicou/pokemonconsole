@@ -1,0 +1,1 @@
+{"NomPkm":"Sardoche","VieMax":50,"VieActuelle":50,"ID":"#2","XP":0,"Niveau":1,"Atk1":"Mais c etait sur enfaite","ForceAtk1":1,"UsesLeftAtk1":30,"Atk2":"Mauvaise foi","ForceAtk2":1,"UsesLeftAtk2":5}

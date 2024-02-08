@@ -2,11 +2,13 @@
 using System;
 using System.IO;
 
+
 class Game
 {
     static void Main()
     {
         // Chemin du fichier
+        File.Delete("../../../asset/InvJoueurTemp.txt");
         string filePath = "../../../asset/MAP1.txt";
         string playersavefile = "../../../save/playerPOS.txt";
         string[] InvActuel = File.ReadAllLines("../../../asset/InvModif.txt");
@@ -15,8 +17,31 @@ class Game
 
         // Coordonnées initiales du joueur
         Position playerPosition;
-        InventoryManager.AddPkmInv();
-
+        Pokemon foundPokemon = InventoryManager.SearchPKM();
+        if (foundPokemon != null)
+        {
+            // Use the found Pokémon's information as needed
+            Console.WriteLine($"Found Pokémon: {foundPokemon.NomPkm}");
+            Console.WriteLine($"VieMax: {foundPokemon.VieMax}");
+            Console.WriteLine($"ID: {foundPokemon.ID}");
+            Console.WriteLine($"XP: {foundPokemon.XP}");
+            Console.WriteLine($"Niveau: {foundPokemon.Niveau}");
+            Console.WriteLine($"Atk1: {foundPokemon.Atk1}");
+            Console.WriteLine($"ForceAtk1: {foundPokemon.ForceAtk1}");
+            Console.WriteLine($"UsesLeftAtk1: {foundPokemon.UsesLeftAtk1}");
+            if (foundPokemon.Atk2 != "")
+            {
+                Console.WriteLine($"Atk2: {foundPokemon.Atk2}");
+                Console.WriteLine($"ForceAtk2: {foundPokemon.ForceAtk2}");
+                Console.WriteLine($"UsesLeftAtk2: {foundPokemon.UsesLeftAtk2}");
+            }
+            Console.WriteLine("\n");
+            // ... (other properties)
+        }
+        else
+        {
+            Console.WriteLine("Pokémon not found.\n");
+        }
         // Lire les lignes du fichier pour obtenir la carte initiale
         string[] initialLines = File.ReadAllLines(filePath);
 
@@ -63,10 +88,18 @@ class Game
                     case ConsoleKey.D:
                         Map.MovePlayer(initialLines, ref playerPosition, 1, 0, initialMap);
                         break;
-                    case ConsoleKey.I:
+                    case ConsoleKey.P:
+                        // Use File.Delete to delete the file
+                        File.Delete("../../../asset/Save.txt");
+                        
+                        break;
+                    /*case ConsoleKey.I:
                         InventoryManager.DisplayInventory(InvActuel);
                         InvOpen = 1;
-                        break;
+                        break;*/
+                    case ConsoleKey.L:
+                        InventoryManager.SaveToTxt(foundPokemon);
+                            break;
                 }
 
                 Player.SavePosition(playersavefile, playerPosition);

@@ -1,41 +1,71 @@
-Test1
-250
-#1
+Reverse Card
+1500
+#0
 0
 1
 Emotional Damage
-500
+1
 1
 No U
-100
+1
 15
 
 Villager
-50
-#2
+500
+#1
 0
 1
 Scam
-150
+1
 5
 Stare
-50
+1
 15
 
 Sardoche
 50
-#3
+#2
 0
 1
-Mais c'etait sur enfaite
-50
+Mais c etait sur enfaite
+1
 30
+Mauvaise foi
+1
+5
 
 ClapTrap
 100
-#4
+#3
 0
 1
 Des Escaliers
-500
+1
+2
+Recrue
+1
+25
+
+Fromage
+50
+#4
+0
+1
+Ratio
+1
+2
+Fondue
+1
+50
+
+KFC
+50
+#5
+0
+1
+Mardi
+1
+50
+La CB
+1
 2

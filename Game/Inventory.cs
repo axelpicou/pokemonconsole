@@ -1,10 +1,32 @@
 ﻿// InventoryManager.cs
 using System;
 using System.Reflection.Emit;
+using System.Xml.Linq;
+using System.Text.Json;
+
+public class Pokemon
+{
+    public string NomPkm { get; set; }
+    public int VieMax { get; set; }
+    public int VieActuelle { get; set; }
+    public string ID { get; set; }
+    public int XP { get; set; }
+    public int Niveau { get; set; }
+    public string Atk1 { get; set; }
+    public int ForceAtk1 { get; set; }
+    public int UsesLeftAtk1 { get; set; }
+    public string Atk2 { get; set; }
+    public int ForceAtk2 { get; set; }
+    public int UsesLeftAtk2 { get; set; }
+
+
+}
 
 class InventoryManager
 {
-    public static void DisplayInventory(string[] inventory)
+
+
+    /*public static void DisplayInventory(string[] inventory)
     {
         ConsoleKeyInfo key;
         int pointerPos = 1;
@@ -48,88 +70,120 @@ class InventoryManager
             }
         } while (key.Key != ConsoleKey.I); // Exit the loop if the I key is pressed
         Console.Clear();
-    }
+    }*/
 
 
-    public static string SearchPKM (string NomPkm, int VieMax, int ID, int XP, int Niveau, string Atk1, int ForceAtk1, int UsesLeftAtk1, string Atk2, int ForceAtk2, int UsesLeftAtk2)
+    public static Pokemon SearchPKM()
     {
-
-        string ListePkm = "../../../asset/ListePkm.txt" ;
+        string ListePkm = "../../../asset/ListePkm.txt";
         string[] lines = File.ReadAllLines(ListePkm);
 
-        Console.Write("Choisissez un pkm a ajoter entre 1 et 4\n");
+        // Prompt user to choose a Pokémon ID
+        Console.WriteLine("Choisissez un Pokémon à ajouter entre 1 et 5");
         string IDpkm = Console.ReadLine();
-        while (IDpkm.Length < 1 )
+        while (string.IsNullOrEmpty(IDpkm) || IDpkm.Length < 1)
         {
-            Console.Write("\nChoisissez un pkm a ajoter entre 1 et 4");
+            Console.WriteLine("Choisissez un Pokémon à ajouter entre 1 et 5");
             IDpkm = Console.ReadLine();
         }
         IDpkm = "#" + IDpkm;
-        Console.WriteLine("\n");
 
+        // Search for the Pokémon in the file
         for (int i = 0; i < lines.Length; i++)
         {
             if (lines[i] == IDpkm)
             {
-                // Ensure there are enough lines below and above
-                if (i - 2 >= 0 && i + 5 < lines.Length)
-                {
-                    NomPkm = lines[i - 2];
-                    if (!int.TryParse(lines[i - 1], out VieMax)) VieMax = 0;
-                    if (!int.TryParse(lines[i], out ID)) ID = 0;
-                    if (!int.TryParse(lines[i + 1], out XP)) XP = 0;
-                    if (!int.TryParse(lines[i + 2], out Niveau)) Niveau = 0;
-                    Atk1 = lines[i + 3];
-                    if (!int.TryParse(lines[i + 4], out ForceAtk1)) ForceAtk1 = 0;
-                    if (!int.TryParse(lines[i + 5], out UsesLeftAtk1)) UsesLeftAtk1 = 0;
-                    Atk2 = i + 6 < lines.Length && !string.IsNullOrWhiteSpace(lines[i + 6]) ? lines[i + 6] : "";
-                    if (Atk2 != "" )
-                    {
-                        if (!int.TryParse(lines[i + 7], out ForceAtk2)) ForceAtk2 = 0;
-                        if (!int.TryParse(lines[i + 8], out UsesLeftAtk2)) UsesLeftAtk2 = 0;
-                    }
-                    else
-                    {
-                        ForceAtk2 = 0;
-                        UsesLeftAtk2 = 0;
-                    }
+                Pokemon pokemon = new Pokemon();
 
-                    // Do something with the retrieved values
-                    Console.WriteLine($"Name: {NomPkm}");
-                    Console.WriteLine($"Life: {VieMax}");
-                    Console.WriteLine($"ID: {ID}");
-                    Console.WriteLine($"XP: {XP}");
-                    Console.WriteLine($"Level: {Niveau}");
-                    Console.WriteLine($"Attaque 1: {Atk1}");
-                    Console.WriteLine($"Force attaque 1: {ForceAtk1}");
-                    Console.WriteLine($"Nombre d'attaques totales: {UsesLeftAtk1}");
-
-                    // Print AtkName2, AtkStrength2, and AtkRemaining2 only if AtkName2 is not empty or whitespace
-                    if (!string.IsNullOrWhiteSpace(Atk2))
-                    {
-                        Console.WriteLine($"Attaque 2: {Atk2}");
-                        Console.WriteLine($"Force attaque 2: {ForceAtk2}");
-                        Console.WriteLine($"Nombre d'attaques totales: {UsesLeftAtk2}");
-                    }
-                    Console.WriteLine("\n");
-                    // Break out of the loop since the data has been found
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Not enough lines above or below #1 in the file.");
-                    break;
-                }
+                // Retrieve Pokémon information
+                pokemon.NomPkm = lines[i - 2];
+                pokemon.VieMax = int.TryParse(lines[i - 1], out int vieMax) ? vieMax : 0;
+                pokemon.VieActuelle = int.TryParse(lines[i - 1], out int VieActuelle) ? vieMax : 0;
+                pokemon.ID = IDpkm;
+                pokemon.XP = int.TryParse(lines[i + 1], out int xp) ? xp : 0;
+                pokemon.Niveau = int.TryParse(lines[i + 2], out int niveau) ? niveau : 0;
+                pokemon.Atk1 = lines[i + 3];
+                pokemon.ForceAtk1 = int.TryParse(lines[i + 4], out int forceAtk1) ? forceAtk1 : 0;
+                pokemon.UsesLeftAtk1 = int.TryParse(lines[i + 5], out int usesLeftAtk1) ? usesLeftAtk1 : 0;
+                pokemon.Atk2 = i + 6 < lines.Length && !string.IsNullOrWhiteSpace(lines[i + 6]) ? lines[i + 6] : "";
+                pokemon.ForceAtk2 = pokemon.Atk2 != "" ? int.TryParse(lines[i + 7], out int forceAtk2) ? forceAtk2 : 0 : 0;
+                pokemon.UsesLeftAtk2 = pokemon.Atk2 != "" ? int.TryParse(lines[i + 8], out int usesLeftAtk2) ? usesLeftAtk2 : 0 : 0;
+                InvTempo(pokemon);
+                return pokemon;
             }
         }
-        return null; 
+
+        // Return null if Pokémon not found
+        return null;
     }
 
-    public static void AddPkmInv()
+    public static void SaveToTxt (Pokemon pokemon)
     {
-        string NomPkm = "", Atk1 = "",Atk2 = "";
-        int VieMax = 0, ID = 0, XP = 0, Niveau = 0, ForceAtk1 = 0, UsesLeftAtk1 = 0, ForceAtk2 = 0, UsesLeftAtk2 = 0;
-        SearchPKM(NomPkm, VieMax, ID, XP, Niveau, Atk1, ForceAtk1, UsesLeftAtk1, Atk2, ForceAtk2, UsesLeftAtk2);
+        // Step 3: Serialize the class instance to JSON
+        string jsonString = JsonSerializer.Serialize(pokemon);
+
+        // Step 4: Write the JSON string to a text file
+        string filePath = "../../../asset/Save.txt";
+        File.WriteAllText(filePath, jsonString);
+
+        Console.WriteLine($"Class written to file: {filePath}");
+
+    }
+
+    public static void InvTempo(Pokemon pokemon)
+    {
+        // Step 3: Serialize the class instance to JSON
+        string jsonString = JsonSerializer.Serialize(pokemon);
+
+        // Step 4: Write the JSON string to a text file
+        string filePath = "../../../asset/InvJoueurTemp.txt";
+        File.WriteAllText(filePath, jsonString);
+
+        Console.WriteLine($"Class written to file: {filePath}");
 
     }
 }
+
+
+
+    /*public static void SavePokemonToInventory(Pokemon pokemon)
+    {
+        string InvModifPath = "../../../asset/InvModif.txt";
+        string[] InvModifLines = File.ReadAllLines(InvModifPath);
+
+        // Find the first occurrence of '#' and ':' and replace them with Pokémon's name and maximum life
+        for (int i = 0; i < InvModifLines.Length; i++)
+        {
+            if (InvModifLines[i].Contains("#"))
+            {
+                InvModifLines[i] = InvModifLines[i].Replace("#", pokemon.NomPkm);
+                break;
+            }
+        }
+
+        for (int i = 0; i < InvModifLines.Length; i++)
+        {
+            if (InvModifLines[i].Contains(":"))
+            {
+                InvModifLines[i] = InvModifLines[i].Replace(":", pokemon.VieMax.ToString());
+                break;
+            }
+        }
+
+        // Save the modified lines back to the "InvModif" file
+        File.WriteAllLines(InvModifPath, InvModifLines);
+    }
+
+    public static void DisplayInventory()
+    {
+        // ... (existing code)
+
+        // Deserialize the inventory and display it
+        Console.WriteLine("Inventory from InvModif:");
+        foreach (string line in File.ReadAllLines("../../../asset/InvModif.txt"))
+        {
+            Console.WriteLine(line);
+        }
+    }*/
+
+

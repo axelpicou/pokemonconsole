@@ -1,0 +1,1 @@
+{"NomPkm":"Fromage","VieMax":50,"VieActuelle":50,"ID":"#5","XP":0,"Niveau":1,"Atk1":"Ratio","ForceAtk1":999,"UsesLeftAtk1":2,"Atk2":"","ForceAtk2":0,"UsesLeftAtk2":0}

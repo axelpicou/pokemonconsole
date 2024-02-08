@@ -24,6 +24,14 @@ class Map
             {
                 // Si la case contient '/'
                 Console.WriteLine("Tu touche de l'Herbe omg");
+                // Introduce a random chance of triggering a fight
+
+                if (RandomChance(0.15)) // Adjust the probability as needed (e.g., 0.3 for a 30% chance)
+                {
+                    Console.WriteLine("A wild Pokémon appeared!");
+                    // Start a battle using the BattleManager
+                    BattleManager.StartBattle();
+                }
             }
 
             // Mettre à jour la carte à la nouvelle position
@@ -31,6 +39,14 @@ class Map
             lineChars[newX] = '@';
             lines[newY] = new string(lineChars);
         }
+    }
+    private static bool RandomChance(double probability)
+    {
+        // Generate a random number between 0 and 1
+        double randomValue = new Random().NextDouble();
+
+        // Check if the random value is less than the specified probability
+        return randomValue < probability;
     }
 
     public static void ResetCell(string[] lines, Position position, string[] initialMap)
@@ -55,4 +71,5 @@ class Map
             lines[position.Y] = lines[position.Y].Remove(position.X, 1).Insert(position.X, currentCell.ToString());
         }
     }
+
 }
