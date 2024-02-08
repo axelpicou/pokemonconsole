@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "pokemonconsole/1.0.0": {
+        "runtime": {
+          "pokemonconsole.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "pokemonconsole/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

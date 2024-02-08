@@ -1,0 +1,39 @@
+nom
+pv
+ID
+nom atk1
+puissance
+nombre dutilisation
+nom atk2
+puissance
+nombre dutilisation
+
+Villager
+50
+#2
+0
+1
+Scam
+150
+5
+Stare
+50
+15
+
+Sardoche
+50
+#3
+0
+1
+Mais c'etait sur enfaite
+50
+30
+
+ClapTrap
+100
+#4
+0
+1
+Des Escaliers
+500
+2

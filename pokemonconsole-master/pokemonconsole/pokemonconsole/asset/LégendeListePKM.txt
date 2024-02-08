@@ -1,0 +1,18 @@
+Nom
+vie
+ID
+XP
+Niveau
+Nom attaque 1
+Puissance Atk
+Attaques restantes
+Nom attaque 2
+Puissance Atk
+Attaques restantes
+
+ static string AddPkmInv(string NomPkm, int VieMax, int ID, int XP, int Niveau, string Atk1, int ForceAtk1, int UsesLeftAtk1, string Atk2, int ForceAtk2, int UsesLeftAtk2)
+ {
+     string[] ListePkm = File.ReadAllLines("../../../asset/ListePkm.txt");
+
+
+ }

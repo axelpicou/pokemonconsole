@@ -1,0 +1,14 @@
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\bin\Debug\net6.0\pokemonconsole.exe
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\bin\Debug\net6.0\pokemonconsole.deps.json
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\bin\Debug\net6.0\pokemonconsole.runtimeconfig.json
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\bin\Debug\net6.0\pokemonconsole.dll
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\bin\Debug\net6.0\pokemonconsole.pdb
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\pokemonconsole.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\pokemonconsole.AssemblyInfoInputs.cache
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\pokemonconsole.AssemblyInfo.cs
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\pokemonconsole.csproj.CoreCompileInputs.cache
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\pokemonconsole.dll
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\refint\pokemonconsole.dll
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\pokemonconsole.pdb
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\pokemonconsole.genruntimeconfig.cache
+C:\Users\basti\OneDrive\Bureau\pokemonconsole-master\pokemonconsole-master\obj\Debug\net6.0\ref\pokemonconsole.dll
