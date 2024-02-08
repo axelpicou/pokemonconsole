@@ -2,51 +2,65 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 class BattleManager
 {
     public static void StartBattle()
     {
-        // Load player's Pokemon from InvJoueurTemp.txt
+        //Charge le pokémon du joueur depuis InvJoueurTemp.txt
         Pokemon playerPokemon = LoadPlayerPokemon();
 
-        // Select a random Pokemon for the opponent from ListePkm.txt
+        //Advresaire aléatoire depuis ListePkm.txt
         Pokemon opponentPokemon = SelectRandomOpponent();
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine($"\nPokémon du joueur:\n{playerPokemon.NomPkm}");
+        Console.ResetColor();
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"\nPokemon Ennemi:\n{opponentPokemon.NomPkm}");
+        Console.ResetColor();
 
-        Console.WriteLine($"Player's Pokemon: {playerPokemon.NomPkm}");
-        Console.WriteLine($"Opponent's Pokemon: {opponentPokemon.NomPkm}");
 
-        // Main battle loop
+
+
+        // Boucle Principale
         while (playerPokemon.VieActuelle > 0 && opponentPokemon.VieActuelle > 0)
         {
-            // Player's turn
+            // Tour du joueur
             PlayerTurn(playerPokemon, opponentPokemon);
 
-            // Check if opponent is defeated
+            // Regarde si la vie de l'ennemi est <= 0
             if (opponentPokemon.VieActuelle <= 0)
             {
-                Console.WriteLine($"Congratulations! You defeated {opponentPokemon.NomPkm}!");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n\n\nBravo!\nVous avez battu {opponentPokemon.NomPkm}!");
+                Console.ResetColor();
                 break;
             }
 
-            // Opponent's turn
+            // Tour Adverse
             OpponentTurn(playerPokemon, opponentPokemon);
 
-            // Check if player is defeated
+            // Regarde si la vie du joueur est <= 0
             if (playerPokemon.VieActuelle <= 0)
             {
-                Console.WriteLine($"Oh no! {opponentPokemon.NomPkm} defeated your Pokemon!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n\n\nOh non! {opponentPokemon.NomPkm} a battu votre {playerPokemon}!");
+                Console.ResetColor();
                 break;
             }
         }
-
-        Console.WriteLine("Battle ended.");
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.WriteLine("\n\nFin du combat.");
+        Console.ResetColor();
     }
+
+
+
 
     private static Pokemon LoadPlayerPokemon()
     {
-        // Load player's Pokemon from InvJoueurTemp.txt
-        // You may want to add error handling here
+        // Charge le pokémon du joueur depuis InvJoueurTemp.txt
         string invJoueurTempPath = "../../../asset/InvJoueurTemp.txt";
         string jsonContent = File.ReadAllText(invJoueurTempPath);
         Pokemon playerPokemon = JsonSerializer.Deserialize<Pokemon>(jsonContent);
@@ -56,19 +70,18 @@ class BattleManager
 
     private static Pokemon SelectRandomOpponent()
     {
-        // Select a random Pokemon for the opponent from ListePkm.txt
-        // You may want to add error handling here
+        // Advresaire aléatoire depuis ListePkm.txt
         string listePkmPath = "../../../asset/ListePkm.txt";
         string[] lines = File.ReadAllLines(listePkmPath);
 
-        // Choose a random ID between 0 and 5
+        // ID random entre 0 et 5
         Random random = new Random();
-        int randomId = random.Next(0, 6); // 6 is exclusive, so it will be between 0 and 5
+        int randomId = random.Next(0, 6); // 6 Exclusif > entre 0 =< x < 6
 
-        // Find the index of the selected Pokemon ID
+        // Trouve l'index de l'id cherchée
         int indexOfPokemon = Array.IndexOf(lines, "#" + randomId.ToString());
 
-        // If the index is not found, try again (you may want to add additional handling)
+        
         while (indexOfPokemon == -1)
         {
             randomId = random.Next(0, 6);
@@ -77,7 +90,7 @@ class BattleManager
 
         try
         {
-            // Create a Pokemon object from the selected line
+            // Création d'une instance
             Pokemon opponentPokemon = new Pokemon
             {
                 NomPkm = lines.ElementAtOrDefault(indexOfPokemon - 2),
@@ -100,43 +113,56 @@ class BattleManager
         {
             Console.WriteLine($"FormatException in SelectRandomOpponent: {e.Message}");
             Console.WriteLine($"Problematic line: {lines.ElementAtOrDefault(indexOfPokemon)}");
-            throw; // Rethrow the exception after logging
+            throw;
         }
     }
 
     private static void PlayerTurn(Pokemon playerPokemon, Pokemon opponentPokemon)
     {
-        // Implement player's turn logic here
-        // For example, let the player choose an attack
-        Console.WriteLine("Player's Turn:");
+        // Logique de l'attaque pour le joueur
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.WriteLine("\n\n\n\nTour du joueur:\n");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("Votre Pokémon:");
         DisplayPokemonInfo(playerPokemon);
+        Console.ResetColor();
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("\n\nPokémon Adverse:");
         DisplayPokemonInfo(opponentPokemon);
-
-        Console.WriteLine("Choose an attack: 1. Attack 1, 2. Attack 2");
+        Console.ResetColor();
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"\n\nChoisissez une attaque: \n\n1. {playerPokemon.Atk1}, Puissance: {playerPokemon.ForceAtk1}\nUtilisations restantes: {playerPokemon.UsesLeftAtk1}\n\n2. {playerPokemon.Atk2}, Puissance: {playerPokemon.ForceAtk2}\nUtilisations restantes: {playerPokemon.UsesLeftAtk2}\n");
         int choice = Convert.ToInt32(Console.ReadLine());
 
         switch (choice)
         {
             case 1:
                 PerformAttack(playerPokemon, opponentPokemon, playerPokemon.Atk1, playerPokemon.ForceAtk1);
+                Console.ResetColor();
+                Console.Clear();
                 break;
             case 2:
                 PerformAttack(playerPokemon, opponentPokemon, playerPokemon.Atk2, playerPokemon.ForceAtk2);
+                Console.ResetColor();
+                Console.Clear();
                 break;
             default:
-                Console.WriteLine("Invalid choice. Your Pokemon hesitated!");
+                Console.WriteLine("\n\n\nChoix invalide! Le Pokémon n'as rien fait");
+                Console.ResetColor();
+                Console.Clear();
                 break;
         }
     }
 
     private static void OpponentTurn(Pokemon playerPokemon, Pokemon opponentPokemon)
     {
-        // Implement opponent's turn logic here
-        Console.WriteLine("Opponent's Turn:");
+        Console.ForegroundColor = ConsoleColor.Red;
+        // Logique de l'attaque pour l'ennemi 
+        Console.WriteLine("\n\nTour Ennemi:");
 
-        // Randomly select an attack for the opponent
+        // Attaque Random pour l'ennemi
         Random random = new Random();
-        int attackChoice = random.Next(1, 3); // Assuming the opponent has two attacks
+        int attackChoice = random.Next(1, 3); 
 
         if (attackChoice == 1)
         {
@@ -146,25 +172,43 @@ class BattleManager
         {
             PerformAttack(opponentPokemon, playerPokemon, opponentPokemon.Atk2, opponentPokemon.ForceAtk2);
         }
-        // Add more conditions for additional attacks if necessary
+        
+        Console.ResetColor();
     }
 
     private static void PerformAttack(Pokemon attacker, Pokemon target, string attackName, int attackStrength)
     {
-        // Implement attack logic here
-        Console.WriteLine($"{attacker.NomPkm} used {attackName}!");
+        // Logique de l'attaque
+        Console.WriteLine($"\n\n{attacker.NomPkm} a utilisé {attackName}!");
 
-        // Calculate damage and reduce target's health
-        int damage = CalculateDamage(attacker, attackStrength);
-        target.VieActuelle -= damage;
+        if (attackName == attacker.Atk1 && attacker.UsesLeftAtk1 > 0)
+    {
+        // Perform the attack
+        target.VieActuelle -= attackStrength;
+        Console.WriteLine($"{target.NomPkm} a pris {attackStrength} dégàts!");
+        attacker.UsesLeftAtk1--;
 
-        Console.WriteLine($"{target.NomPkm} took {damage} damage. {target.NomPkm}'s remaining health: {target.VieActuelle}");
+        Console.WriteLine($"Utilisations restante de {attackName}: {attacker.UsesLeftAtk1}");
+    }
+    else if (attackName == attacker.Atk2 && attacker.UsesLeftAtk2 > 0)
+    {
+        // Perform the attack
+        target.VieActuelle -= attackStrength;
+        Console.WriteLine($"{target.NomPkm} takes {attackStrength} damage!");
+        attacker.UsesLeftAtk2--;
+
+        Console.WriteLine($"Utilisations restante de {attackName}: {attacker.UsesLeftAtk2}");
+    }
+    else
+    {
+        Console.WriteLine($"L'attaque {attackName} de {attacker.NomPkm} n'est plus utilisable!");
+    }
+        Console.WriteLine($"\n{target.NomPkm} a pris {attackStrength} dégàts.\nPV restants: {target.VieActuelle}");
     }
 
     private static int CalculateDamage(Pokemon attacker, int attackStrength)
     {
-        // Implement damage calculation logic based on attacker's level, attack strength, etc.
-        // For simplicity, a basic formula is used here
+        // Calcul de DPS selon les niveaux, puissance et autre
         int damage = attackStrength * attacker.Niveau;
 
         return damage;
@@ -172,7 +216,10 @@ class BattleManager
 
     private static void DisplayPokemonInfo(Pokemon pokemon)
     {
-        // Display Pokemon information
-        Console.WriteLine($"{pokemon.NomPkm} - Level: {pokemon.Niveau}, Health: {pokemon.VieActuelle}/{pokemon.VieMax}\n");
+        // Info des Pokémons
+        Console.WriteLine($"{pokemon.NomPkm}");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"\nPV: {pokemon.VieActuelle}/{pokemon.VieMax}\n");
+        Console.ResetColor();
     }
 }

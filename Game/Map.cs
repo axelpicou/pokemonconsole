@@ -23,12 +23,15 @@ class Map
             if (lines[newY][newX] == '/')
             {
                 // Si la case contient '/'
-                Console.WriteLine("Tu touche de l'Herbe omg");
+                /*Console.WriteLine("Tu touche de l'Herbe omg");*/
                 // Introduce a random chance of triggering a fight
 
                 if (RandomChance(0.15)) // Adjust the probability as needed (e.g., 0.3 for a 30% chance)
                 {
-                    Console.WriteLine("A wild Pokémon appeared!");
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\n\n\nUn Pokémon sauvage est apparu!");
+                    Console.ResetColor();
                     // Start a battle using the BattleManager
                     BattleManager.StartBattle();
                 }

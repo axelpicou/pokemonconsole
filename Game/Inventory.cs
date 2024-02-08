@@ -78,13 +78,21 @@ class InventoryManager
         string ListePkm = "../../../asset/ListePkm.txt";
         string[] lines = File.ReadAllLines(ListePkm);
 
-        // Prompt user to choose a Pokémon ID
-        Console.WriteLine("Choisissez un Pokémon à ajouter entre 1 et 5");
-        string IDpkm = Console.ReadLine();
-        while (string.IsNullOrEmpty(IDpkm) || IDpkm.Length < 1)
+        Console.WriteLine("Choisissez un Starter à ajouter entre 1 et 5");
+        string IDpkm;
+        while (true)
         {
-            Console.WriteLine("Choisissez un Pokémon à ajouter entre 1 et 5");
             IDpkm = Console.ReadLine();
+
+            // Chack si la valeur donnée est entre 0 et 5
+            if (int.TryParse(IDpkm, out int chosenID) && chosenID >= 0 && chosenID <= 5)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Choix invalide, Choisir entre 1 and 5.");
+            }
         }
         IDpkm = "#" + IDpkm;
 
@@ -126,7 +134,6 @@ class InventoryManager
         string filePath = "../../../asset/Save.txt";
         File.WriteAllText(filePath, jsonString);
 
-        Console.WriteLine($"Class written to file: {filePath}");
 
     }
 
@@ -139,7 +146,6 @@ class InventoryManager
         string filePath = "../../../asset/InvJoueurTemp.txt";
         File.WriteAllText(filePath, jsonString);
 
-        Console.WriteLine($"Class written to file: {filePath}");
 
     }
 }

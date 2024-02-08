@@ -21,19 +21,16 @@ class Game
         if (foundPokemon != null)
         {
             // Use the found Pokémon's information as needed
-            Console.WriteLine($"Found Pokémon: {foundPokemon.NomPkm}");
-            Console.WriteLine($"VieMax: {foundPokemon.VieMax}");
-            Console.WriteLine($"ID: {foundPokemon.ID}");
-            Console.WriteLine($"XP: {foundPokemon.XP}");
-            Console.WriteLine($"Niveau: {foundPokemon.Niveau}");
-            Console.WriteLine($"Atk1: {foundPokemon.Atk1}");
-            Console.WriteLine($"ForceAtk1: {foundPokemon.ForceAtk1}");
-            Console.WriteLine($"UsesLeftAtk1: {foundPokemon.UsesLeftAtk1}");
+            Console.WriteLine($"\nPokémon Choisi: {foundPokemon.NomPkm}");
+            Console.WriteLine($"VieMax: {foundPokemon.VieMax}HP");
+            Console.WriteLine($"Première attaque: {foundPokemon.Atk1}");
+            Console.WriteLine($"Puissance: {foundPokemon.ForceAtk1}");
+            Console.WriteLine($"Coups totaux: {foundPokemon.UsesLeftAtk1}");
             if (foundPokemon.Atk2 != "")
             {
-                Console.WriteLine($"Atk2: {foundPokemon.Atk2}");
-                Console.WriteLine($"ForceAtk2: {foundPokemon.ForceAtk2}");
-                Console.WriteLine($"UsesLeftAtk2: {foundPokemon.UsesLeftAtk2}");
+                Console.WriteLine($"Deuxième attaque: {foundPokemon.Atk2}");
+                Console.WriteLine($"Puissance: {foundPokemon.ForceAtk2}");
+                Console.WriteLine($"Coups totaux: {foundPokemon.UsesLeftAtk2}");
             }
             Console.WriteLine("\n");
             // ... (other properties)
@@ -107,8 +104,8 @@ class Game
                 if (InvOpen == 0)
                 {
                     // Afficher la carte mise à jour
-                    Console.WriteLine($"\nLe joueur est en X:{playerPosition.X} Y:{playerPosition.Y}");
-                    Console.WriteLine("Carte mise à jour :");
+                    /*Console.WriteLine($"\nLe joueur est en X:{playerPosition.X} Y:{playerPosition.Y}");
+                    Console.WriteLine("Carte mise à jour :");*/
                     foreach (string line in initialLines)
                     {
                         Console.WriteLine(line);
