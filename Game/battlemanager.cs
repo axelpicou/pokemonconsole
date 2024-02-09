@@ -237,7 +237,7 @@ class BattleManager
 
         // Award a random amount of XP after the battle
         Random random = new Random();
-        int xpEarned = random.Next(50, 100); // Adjust the range based on your game's balancing
+        int xpEarned = random.Next(20, 40); // Adjust the range based on your game's balancing
         // Add the earned XP to the player's Pokémon
         playerPokemon.XP += xpEarned;
 
