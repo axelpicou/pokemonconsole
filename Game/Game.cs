@@ -56,6 +56,31 @@ class Game
                 }
             }
         }
+        else
+        {
+            Pokemon foundPokemon = InventoryManager.SearchPKM();
+            if (foundPokemon != null)
+            {
+                // Use the found Pokémon's information as needed
+                Console.WriteLine($"\nPokémon Choisi: {foundPokemon.NomPkm}");
+                Console.WriteLine($"VieMax: {foundPokemon.VieMax}HP");
+                Console.WriteLine($"Première attaque: {foundPokemon.Atk1}");
+                Console.WriteLine($"Puissance: {foundPokemon.ForceAtk1}");
+                Console.WriteLine($"Coups totaux: {foundPokemon.UsesLeftAtk1}");
+                if (foundPokemon.Atk2 != "")
+                {
+                    Console.WriteLine($"Deuxième attaque: {foundPokemon.Atk2}");
+                    Console.WriteLine($"Puissance: {foundPokemon.ForceAtk2}");
+                    Console.WriteLine($"Coups totaux: {foundPokemon.UsesLeftAtk2}");
+                }
+                Console.WriteLine("\n");
+                // ... (other properties)
+            }
+            else
+            {
+                Console.WriteLine("Pokémon not found.\n");
+            }
+        }
 
 
         // Coordonnées initiales du joueur
